@@ -9,6 +9,7 @@ const TodoList = ({
   inputValue,
   onInputChange,
   editingTask,
+  onKeyPress
 }) => {
   return (
     <div className="w-full max-w-md space-y-4">
@@ -17,6 +18,7 @@ const TodoList = ({
           type="text"
           value={inputValue}
           onChange={onInputChange}
+          onKeyDown={onKeyPress} // Obsluha Enter
           placeholder="Zadejte nový úkol"
           className="flex-grow py-2 px-4 rounded-lg bg-blue-100 hover:bg-blue-200 focus:ring-2 focus:ring-blue-300 transition-all duration-300"
         />

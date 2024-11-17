@@ -61,8 +61,15 @@ const ShoppingListDetail = () => {
     saveTasksToLocalStorage(updatedTasks);
   };
 
+  // Funkce pro obsluhu stisknutí klávesy Enter
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleAddTask(); // Zavolá funkci pro přidání úkolu, když je stisknuto Enter
+    }
+  };
+
   return (
-<div className="h-screen bg-slate-50">
+    <div className="h-screen bg-slate-50">
       <div className="flex flex-col items-start p-4 space-y-4">
         <h1 className="text-xl font-bold">Detail: {decodeURIComponent(id)}</h1>
         <TodoList
@@ -74,6 +81,7 @@ const ShoppingListDetail = () => {
           inputValue={taskInput}
           onInputChange={handleInputChange}
           editingTask={editingTask}
+          onKeyPress={handleKeyPress} // Předání funkce pro obsluhu Enter
         />
       </div>
     </div>
