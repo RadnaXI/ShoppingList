@@ -1,48 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';  // Use useNavigate instead of useHistory
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';  // Importujeme useNavigate
 
-const Login = ({ onLogin }) => {
+const CreateAccount = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();  // useNavigate hook
+  const navigate = useNavigate();  // Hook pro přesměrování
 
-  useEffect(() => {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    // Pokud není žádný uživatel v localStorage, přidáme výchozí uživatele
-    if (users.length === 0) {
-      const defaultUsers = [
-        { username: 'firstuser', password: '1234', contacts: [], items: [] },
-        { username: 'seconduser', password: '2345', contacts: [], items: [] }
-      ];
-      localStorage.setItem('users', JSON.stringify(defaultUsers));
-    }
-  }, []);
-
-  const handleSubmit = (e) => {
+  const handleCreateAccount = (e) => {
     e.preventDefault();
+    
+    // Načteme všechny uživatele z localStorage
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.username === username && u.password === password);
-
-    if (user) {
-      localStorage.setItem('loggedInUser', JSON.stringify(user));
-      onLogin(user);
-    } else {
-      setError('Invalid credentials.');
+    
+    // Zkontrolujeme, zda už uživatel s tímto jménem neexistuje
+    const existingUser = users.find(u => u.username === username);
+    if (existingUser) {
+      setError('Tento uživatel již existuje.');
+      return;
     }
-  };
 
-  const handleCreateAccount = () => {
-    navigate('/create-account');
+    // Vytvoříme nového uživatele
+    const newUser = { username, password, contacts: [], items: [] };
+    users.push(newUser);
+    
+    // Uložíme aktualizovaný seznam uživatelů do localStorage
+    localStorage.setItem('users', JSON.stringify(users));
+
+    // Přesměrujeme uživatele na přihlašovací stránku
+    navigate('/');  // Přesměrování na Login stránku
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
+        <h2 className="text-2xl font-bold mb-4">Vytvořit účet</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleCreateAccount}>
           <div className="mb-4">
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
               Username
@@ -73,21 +68,12 @@ const Login = ({ onLogin }) => {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-700"
           >
-            Login
-          </button>
-        </form>
-
-        <p className="text-center mt-4">
-          <button
-            onClick={handleCreateAccount}
-            className="text-blue-500 hover:underline"
-          >
             Vytvořit účet
           </button>
-        </p>
+        </form>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default CreateAccount;
