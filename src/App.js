@@ -24,12 +24,11 @@ const App = () => {
       ) : (
         <>
           <header className="flex justify-between items-center bg-slate-100 p-4 shadow-md">
-            <h1 className="text-3xl font-bold">Shopping Lists</h1>
             <Link
               to="/shopping-list"
-              className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 w-48 mr-6 text-center"
+              className="text-3xl font-bold"
             >
-              Overview
+              Shopping Lists
             </Link>
             <DropdownUsers className="absolute top-4 right-4" />
           </header>
