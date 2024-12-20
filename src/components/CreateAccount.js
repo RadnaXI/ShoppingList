@@ -1,34 +1,29 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Importujeme useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const CreateAccount = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();  // Hook pro přesměrování
+  const navigate = useNavigate();
 
   const handleCreateAccount = (e) => {
     e.preventDefault();
     
-    // Načteme všechny uživatele z localStorage
     const users = JSON.parse(localStorage.getItem('users')) || [];
     
-    // Zkontrolujeme, zda už uživatel s tímto jménem neexistuje
     const existingUser = users.find(u => u.username === username);
     if (existingUser) {
       setError('Tento uživatel již existuje.');
       return;
     }
 
-    // Vytvoříme nového uživatele
     const newUser = { username, password, contacts: [], items: [] };
     users.push(newUser);
     
-    // Uložíme aktualizovaný seznam uživatelů do localStorage
     localStorage.setItem('users', JSON.stringify(users));
 
-    // Přesměrujeme uživatele na přihlašovací stránku
-    navigate('/');  // Přesměrování na Login stránku
+    navigate('/');
   };
 
   return (
